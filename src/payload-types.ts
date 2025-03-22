@@ -89,7 +89,7 @@ export interface Config {
   };
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'en' | 'es';
   user: User & {
     collection: 'users';
   };
@@ -146,6 +146,7 @@ export interface User {
 export interface Tenant {
   id: number;
   slug: string;
+  supportedLocales?: ('en' | 'es')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -289,6 +290,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
+  supportedLocales?: T;
   updatedAt?: T;
   createdAt?: T;
 }

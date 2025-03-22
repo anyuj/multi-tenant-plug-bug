@@ -12,5 +12,11 @@ export const Tenants: CollectionConfig = {
       required: true,
       unique: true,
     },
+    {
+      name: 'supportedLocales',
+      type: 'select',
+      hasMany: true,
+      options: ['en', 'es'],
+    },
   ],
 }

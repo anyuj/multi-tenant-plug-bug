@@ -12,6 +12,7 @@ import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { Config } from './payload-types'
 import { Tenants } from './collections/Tenants'
 import { Examples } from './collections/Examples'
+import { getTenantFromCookie } from '@payloadcms/plugin-multi-tenant/utilities'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,6 +38,27 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
+  localization: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
+    fallback: true,
+    filterAvailableLocales: async ({ req, locales }) => {
+      if (getTenantFromCookie(req.headers, 'text')) {
+        console.log(getTenantFromCookie(req.headers, 'text'))
+        const fullTenant = await req.payload.findByID({
+          id: getTenantFromCookie(req.headers, 'text') as string,
+          collection: 'tenants',
+          req,
+        })
+        if (fullTenant && fullTenant.supportedLocales?.length) {
+          return locales.filter((locale) => {
+            return fullTenant.supportedLocales?.includes(locale.code as 'en' | 'es')
+          })
+        }
+      }
+      return locales
+    },
+  },
   sharp,
   plugins: [
     multiTenantPlugin<Config>({
