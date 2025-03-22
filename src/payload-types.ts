@@ -54,6 +54,7 @@ export type SupportedTimezones =
   | 'Asia/Singapore'
   | 'Asia/Tokyo'
   | 'Asia/Seoul'
+  | 'Australia/Brisbane'
   | 'Australia/Sydney'
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
@@ -145,6 +146,7 @@ export interface User {
  */
 export interface Tenant {
   id: number;
+  _order?: string;
   slug: string;
   updatedAt: string;
   createdAt: string;
@@ -288,6 +290,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "tenants_select".
  */
 export interface TenantsSelect<T extends boolean = true> {
+  _order?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
